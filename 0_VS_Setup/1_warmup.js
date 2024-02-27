@@ -59,7 +59,7 @@ variable2 = 2;
 variable3 = 3;
 
 // b. Hint: This function needs a name after the word function.
-function () {
+function func() {
   console.log("Hello!");
 }
 
