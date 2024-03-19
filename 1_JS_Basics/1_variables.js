@@ -84,6 +84,9 @@ console.log(primitive);
 // Assign the new string 'I am no longer primitive. I am making progress!'
 // to primitive and print it to console.
 
+primitive = 'I am no longer primitive. I am making progress!';
+console.log(primitive);
+
 // Technical Note! Before I said that primitive types are immutable and not
 // objects. While this is true, in JavaScript primitives are often wrapped in 
 // an object before you interact with them and may have methods. More on this
@@ -108,7 +111,7 @@ console.log(primitive);
 
 
 // Now fully embrace the looseness of JavaScript by creating a variable named
-// morpho and by assigning a value to it for each primitive type in JavaScript. 
+// morpho and by assigning a value to it for each primitive type in JavaScript.
 
 // Then, use the typeof operator to print the type of a variable. Be ready for
 // some surprises.
@@ -138,12 +141,13 @@ console.log('The type of Morpho is now: ' + typeof morpho);
 
 
 // Strings
-
+morpho = 'I morphed into a string.'
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Characters
+morpho = 'a';
 
 // A one-type character string is also a string. Other languages have
 // the type 'char' for this special case, but not JS.
@@ -154,11 +158,13 @@ console.log('The type of Morpho is now: ' + typeof morpho);
 // Booleans.
 
 // False.
+morpho = false;
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // True.
+morpho = true;
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
@@ -166,11 +172,21 @@ console.log('The type of Morpho is now: ' + typeof morpho);
 // Not much to say about booleans, they are kind of booring. But useful.
 
 // Undefined.
+morpho = undefined;
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
+// If something does not exist or has not yet been initialized, its type
+// is 'undefined'. See below.
+
+let iAmNotDefinedYet;
+
+console.log('iAmNotDefinedYet: ' + iAmNotDefinedYet);
+console.log('iAmNotDefinedYet type is now: ' + typeof iAmNotDefinedYet);
+
 // Null
+morpho = null;
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
@@ -182,16 +198,16 @@ console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Bigints represent whole numbers larger than 2^53 - 1. You probably won't 
 // use them a lot.
-
+morpho = 1n;
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Symbols are variables that guaranteed to be unique. You probably won't 
 // use them a lot.
+morpho = Symbol('unique');
 
-
-console.log('Morpho: ' + morpho);
+// console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 
