@@ -119,11 +119,14 @@ console.log("2. I would like to go below.");
 // portion of the code.
 
 let a = 1234;
-                a++;
+a++;
 if (a > 123) {
-a--;
-} else a++;
-            console.log(a);
+  a--;
+} else {
+  a++;
+  console.log(a);
+}
+console.log(a);
 
 // Nothing happened?
 // If so, your code (technically my code, if you just cloned it)
