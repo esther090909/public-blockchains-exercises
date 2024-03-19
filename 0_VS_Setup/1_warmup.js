@@ -88,9 +88,9 @@ function hello() {
 // At every word "not" there is a new cursor, so you can write multiple rows
 // at once. Delete "not" and replace the exclamation mark with a sad face. 
 
-catchMeIfYouCan1 = "You did not catch me!";
-catchMeIfYouCan2 = "You did not catch me!";
-catchMeIfYouCan3 = "You did not catch me!";
+catchMeIfYouCan1 = "You did catch me:(";
+catchMeIfYouCan2 = "You did catch me:(";
+catchMeIfYouCan3 = "You did catch me:(";
 
 // d. Sometimes you want to move an entire line of code up or down. Of course
 // there is a shortcut for that: Alt-ArrowUp/Down.
