@@ -59,7 +59,7 @@ variable2 = 2;
 variable3 = 3;
 
 // b. Hint: This function needs a name after the word function.
-function func() {
+function hello() {
   console.log("Hello!");
 }
 
@@ -71,7 +71,7 @@ function func() {
 // without using the mouse at all, but we are still far from that point.
 // Here we just learn a couple of useful tricks.
 
-// a. Comment out useless code with Ctrl-/ Ctrl-/ (Linux/Windows)
+// a. Comment out useless code with Ctrl + K -> C (Linux/Windows)
 // or Cmd-/ (Mac). Notice if you apply the command multiple times, it will
 // uncomment/comment/uncomment... it.
 
