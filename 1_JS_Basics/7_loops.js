@@ -21,7 +21,9 @@ persons = [
     { first: 'Linus', last: 'Torvalds', year: 1962 }
 ];
 
-
+for (let i = 0; i < persons.length; i++) {
+    console.log(persons[i].year);
+}
 
 // EXERCISE 2. Verbose Loop.
 ////////////////////////////
@@ -35,9 +37,31 @@ persons = [
 // you loop through the items in the array.
 // Hint2: You will also need some if logic to correctly add or not the comma
 // between the first and the second element and finishing with a dot.
+str = `There are ${persons.length} elements in the array: `;
+for (let i = 0; i < persons.length; i++) {
+    str += `element ${i+1} is ${persons[i].first} ${persons[i].last}, born in ${persons[i].year}`;
+    if (i < persons.length-1) {
+        str += `, `;
+    } else {
+        str += '.';
+    }
+};
+
+console.log(str);
 
 // b. bonus. Can you replace the part "element 1" with "the first element" and
 // "element 2" with the "second element" and so on?
+str2 = `There are ${persons.length} elements in the array: `;
+ordinals = ['first', 'second', 'third', 'fourth'];
+for (let i = 0; i < persons.length; i++) {
+    str2 += `the ${ordinals[i]} element is ${persons[i].first} ${persons[i].last}, born in ${persons[i].year}`;
+    if (i < persons.length-1) {
+        str2 += `, `;
+    } else {
+        str2 += '.';
+    }
+};
+console.log(str2);
 
 // EXERCISE 3. Loop through the properties of an object.
 ////////////////////////////////////////////////////////
@@ -57,7 +81,11 @@ persons = [
 // (however the order might be different).
 // Hint: in this exercise objects behave like arrays, but instead of a
 // numeric index, you use the property name.
-
+for (let key in persons[0]) {
+    if (persons[0].hasOwnProperty(key)) {
+        console.log(`${key}: ${persons[0][key]}`);
+    }
+};
 
 //////////////////////////////
 // You finished this sheet! //
