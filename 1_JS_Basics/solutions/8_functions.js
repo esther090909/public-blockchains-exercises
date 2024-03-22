@@ -166,7 +166,8 @@ printSentence();
 // result in a global variable youngest.
 // Hint: whether you use let youngest = ... or simply youngest = ...
 // inside the function makes a big difference. Do you understand why?
-
+brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
+linus = { first: 'Linus', last: 'Torvalds', year: 1969 };
 youngest = null;
 function whoIsYounger(person1, person2) {
     youngest = person1.year < person2.year ? person2 : person1;

@@ -42,6 +42,9 @@ let hello3 = () => {
 
 // Create a function named printMyName that prints out your name.
 // Verify its type and invoke it.
+function printMyName() {
+    console.log('Esther Krystek');
+}
 
 console.log('The type of printMyName is: ' + typeof printMyName);
 printMyName();
@@ -55,6 +58,10 @@ printMyName();
 // input parameter and prints a sentence containing the name. For instance:
 // printSentence('Brendan');
 // 'Brendan is great!'.
+function printSentence(firstName) {
+    console.log(`${firstName} is great!`);
+}
+printSentence('Esther');
 
 // EXERCISE 3. Print Person.
 ////////////////////////////
@@ -68,8 +75,8 @@ printMyName();
 // printSentence(personObject);
 // 'Brendan Eich is born is 1961 and he is great!'.
 
-function printSentence(person) {
-    // Add code here.
+function printSentence(personObject) {
+    console.log(`${personObject.first} ${personObject.last} is born in ${personObject.year} and he is great!`);
 }
 
 personObject = { first: 'Brendan', last: 'Eich', year: 1961 };
@@ -85,8 +92,18 @@ printSentence(personObject);
 // Hint: you may use the ternary operator ? for a more compact code.
 
 function printSentence2(person1, person2) {
-    // Add code here.
+    person1.year > person2.year ?
+    console.log(`${person1.first} ${person1.last} is born in ${person1.year} and he is great!`) :
+    console.log(`${person2.first} ${person2.last} is born in ${person2.year} and he is great!`);
 }
+
+// OR:
+function printSentence2(person1, person2) {
+    let person = person1.year < person2.year ? person2 : person1;
+    console.log(person.first + ' ' + person.last +
+    ' is born in ' + person.year + ' and he is great!');
+}
+
 brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
 linus = { first: 'Linus', last: 'Torvalds', year: 1969 };
 printSentence2(brendan, linus);
@@ -102,7 +119,18 @@ printSentence2(brendan, linus);
 // Create two functions. One returns the person object that is the youngest,
 // the second one prints it.
 // Hint: combine the return statement and the ternary operator for a one-liner.
+brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
+linus = { first: 'Linus', last: 'Torvalds', year: 1969 };
+function printSentence(personObject) {
+    console.log(`${personObject.first} ${personObject.last} is born in ${personObject.year} and he is great!`);
+}
 
+function youngest(person1, person2) {
+    return person1.year > person2.year ? person1 : person2;
+}
+
+youngerPerson = youngest(brendan, linus);
+printSentence(youngerPerson);
 
 // EXERCISE 6 Scope.
 ////////////////////
@@ -126,7 +154,18 @@ printSentence2(brendan, linus);
 // parameters for the printSentence function above. Rewrite the function so
 // that it accesses directly the brendan and linus objects created before
 // without using input parameters.
+function printSentence() {
+    brendan.year > linus.year ?
+    console.log(`${brendan.first} ${brendan.last} is born in ${brendan.year} and he is great!`) :
+    console.log(`${linus.first} ${linus.last} is born in ${linus.year} and he is great!`);
+}
+brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
+linus = { first: 'Linus', last: 'Torvalds', year: 1969 };
+printSentence(brendan, linus);
 
+// Certainly, this function is less general than the function with input
+// parameters, so the one with input parameters is the preferred
+// in most situations.
 
 // b. Advanced. A function can also modify/create other variables outside its
 // body, but inside its scope. Modify the whoIsYounger function so
@@ -134,10 +173,16 @@ printSentence2(brendan, linus);
 // result in a global variable youngest.
 // Hint: whether you use let youngest = ... or simply youngest = ...
 // inside the function makes a big difference. Do you understand why?
+let youngestPerson;
+function youngest(person1, person2) {
+    youngestPerson = person1.year > person2.year ? person1 : person2;
+}
+brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
+linus = { first: 'Linus', last: 'Torvalds', year: 1969 };
+youngest(brendan, linus);
+console.log(youngestPerson);
 
-console.log(youngest);
-
-// c. Ninja. You can think at the scope of a variable like a set of nested
+// c. Ninja. You can think of the scope of a variable like a set of nested
 // Russian dolls (Matryoshkas). You don't know what is
 // inside the inner one, until you open it, but a that point you know exactly
 // what was inside all the outer dolls. But what happens if you had two
@@ -146,14 +191,14 @@ console.log(youngest);
 commonVariable = 0;
 
 function dollA() {
-    let privateVariableDollA = 10;
+    privateVariableDollA = 10;
     commonVariable += privateVariableDollA;
     // dollA function has no access to the variable defined inside dollB.
     // console.log(privateVariableDollB); // Will throw an error.
 }
 
 function dollB() {
-    let privateVariableDollB = -10;
+    privateVariableDollB = -10;
     commonVariable += privateVariableDollB;
     // dollB function has no access to the variable defined inside dollA.
     // console.log(privateVariableDollA); // Will throw an error.
@@ -167,7 +212,7 @@ console.log(commonVariable);
 console.log(privateVariableDollB); // Will throw an error.
 
 // Modify the functions dollA and dollB so that no errors are thrown.
-
+// Without "let" privateVariableDollA is added into the global space.
 
 // It works now, but it is bad coding practice to "leak" variables defined
 // inside a function into the global space. You should try to avoid it, and
@@ -190,9 +235,9 @@ function isNotGreat() {
     return ' who?';
 }
 function judgePerson(person, cb) {
-    // Your code here.
+    console.log(person.first + cb());
 }
-
+brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
 judgePerson(brendan, isGreat);
 judgePerson(brendan, isNotGreat);
 
@@ -202,7 +247,7 @@ judgePerson(brendan, isNotGreat);
 // not cluttering the scope. Not every programming language support this
 // feature, this is actually pretty neat Brendan!
 
-// An example of anonymous function is a sorting functions for elements of
+// An example of anonymous function is a sorting function for elements of
 // an array. A sorting (or comparator) function takes as input two elements
 // of the array and returns 1, if the first element preceeds the second,
 // of -1 if vice versa. The function iterates through all possible pairs
@@ -210,10 +255,14 @@ judgePerson(brendan, isNotGreat);
 
 // Create a function that sorts the elements of the persons array from
 // youngest to older.
+brendan = { first: 'Brendan', last: 'Eich', year: 1961 };
+linus = { first: 'Linus', last: 'Torvalds', year: 1969 };
 persons = [ brendan, linus ];
 
 persons.sort(
-    // Define a comparator function in here.
+    function(a,b) {
+        return a.year < b.year ? 1 : -1;
+    }
 );
 console.log(persons);
 
