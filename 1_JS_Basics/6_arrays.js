@@ -33,16 +33,38 @@ brendan = {
     year: 1961
 };
 
-// persons = ...
+persons = [brendan, pabloPicasso = {
+        first: 'Pablo',
+        last: 'Picasso',
+        year: 1881}, napoleonBonaparte = {
+        fisrt: 'Napoleon',
+        last: 'Bonaparte',
+        year: 1769
+    }
+];
+
+console.log(persons);
+
+// OR:
+persons = [
+    brendan,
+    { first: 'Pablo', last: 'Picasso', year: 1881 },
+    { first: 'Napoleon', last: 'Bonaparte', year: 1821}
+];
+
 
 // b. Count how many elements are in the array.
 // Hint: Use the .length property.
+
+console.log(persons.length);
 
 // EXERCISE 2. Accessing items inside arrays.
 /////////////////////////////////////////////
 
 // Access the second element of the array and create a string of the type: 
 // 'X was born in Y'.
+str = `${persons[1].first} ${persons[1].last} was born in ${persons[1].year}.`;
+console.log(str);
 
 // Hint: arrays are 0-indexed, that is the first element has index 0,
 // the second element 1, and so on.
@@ -56,8 +78,9 @@ brendan = {
 // number of elements in the array, then "floor" it with the corresponding
 // method of the Math object.
 
-// randomNumber = ... 
-console.log(persons[randomNumber]);
+randomNumber = Math.floor(Math.random()*persons.length);
+str = `${persons[randomNumber].first} ${persons[randomNumber].last} was born in ${persons[randomNumber].year}.`;
+console.log(str);
 
 // EXERCISE 4. Add a new element to the array of persons.
 //////////////////////////////////////////////////////////
@@ -71,6 +94,8 @@ console.log(persons[randomNumber]);
 // you would like to add the element. For instance the method `push`
 // will add at the bottom of the array.
 
+persons.push({first: 'Phil', last: 'Katz', year: 1962});
+
 // Verify that you added at the bottom.
 console.log(persons[3]);
 
@@ -80,6 +105,7 @@ console.log(persons[3]);
 // Maybe you hurried too much with Phil Katz. What about
 // replacing him with Linus Torvalds (1969) instead?
 // Hint: simply assign a new value at a given array index.
+persons[3] = {first: 'Linus', last: 'Torvalds', year: 1969};
 
 // Verify who is the bottom of the array.
 console.log(persons[3]);
@@ -93,6 +119,7 @@ console.log(persons[3]);
 // containing the data about Picasso and Napoleon.
 // Hint: the method `splice` modifies the original array and returns the
 // removed elements.
+persons.splice(1,2)
 
 // Verify the content of the updated array.
 console.log(persons);
@@ -105,7 +132,11 @@ console.log(persons);
 // Hint: in loose type comparisons 0 == false.
 
 myArray = [];
-
+if (myArray.length) {
+    console.log('Array is not empty');
+} else {
+    console.log('Array is empty');
+}
 
 //////////////////////////////
 // You finished this sheet! //
