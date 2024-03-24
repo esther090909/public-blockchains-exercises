@@ -15,7 +15,28 @@
 // a. Implement a function that computes the fibonacci number for
 // any input number. For instance, if input is 10, the result is 55.
 // Motivational Hint: This exercise is often asked at job interviews.
+function fibonacci(number) {
+    let fibonacci = [0,1]
+    if (number < 2) {
+        return fibonacci[number];
+    } else {
+        for (let i = 2; i <= number; i++) {
+            fibonacci.push(fibonacci[i-1] + fibonacci[i-2]);
+        }
+    }
+    return fibonacci[fibonacci.length-1];
+}
+console.log(fibonacci(3));
 
+// OR:
+function fibonacci(n) {
+    let fibo = [ 0, 1 ];
+    if (n < 2) return fibo[n];
+    for (let i=2; i <= n; i++) {
+        fibo[i] = fibo[i-1] + fibo[i-2];
+    }
+    return fibo[n];
+}
 
 // EXERCISE 2. Bonus. Recursive Fibonacci.
 //////////////////////////////////////////
@@ -47,7 +68,17 @@ console.log(resultOfRecursion);
 // Now write the fibonacci recursive function.
 // Hint: it takes just 2 lines (but you could make it one).
 
+function fibonacci(number) {
+    if (number < 2) return number;
+    else return fibonacci(number-1) + fibonacci(number-2);
+}
+console.log(fibonacci(6));
 
+// OR:
+function fibonacci(number) {
+    return (number<2) ? number : fibonacci(number-1) + fibonacci(number-2);
+}
+console.log(fibonacci(6));
 
 // FUN EXERCISE!
 ////////////////
@@ -62,4 +93,3 @@ console.log(resultOfRecursion);
 
 // Now go create something great!
 // I mean, without any graphics, or user inputs, or interfaces. But great.
-
