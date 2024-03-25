@@ -36,7 +36,6 @@ hello().then(console.log);
 // Await can await async functions only inside an async function.
 // (tl;dr the JS compiler wants to know in advance if an await is coming).
 
-
 // Let's make hello really async now.
 hello = async () => { 
   let promise = new Promise((resolve, reject) => {
@@ -62,21 +61,14 @@ hello();
 // Let's make hello really async now.
 hello = async () => { 
   let promise = new Promise((resolve, reject) => {
-    setTimeout(() => reject("Nope!"), 1000);
+    setTimeout(() => resolve("Hello"), 1000);
   });
   try {
     let word = await promise;
     console.log(word);
-  }
-  catch(e) {
+  } catch(e) {
     console.log(e);
   }
 };
 
 hello();
-
-
-
-
-
-  

@@ -54,7 +54,7 @@ fetch(ENDPOINT + query)
     // Fetches gets the headers first, then it process
     // the body asynchronously. 
     
-    // console.log(res);
+    console.log(res);
 
     // It also returns a promise.
     return res.json();
@@ -64,7 +64,7 @@ fetch(ENDPOINT + query)
   })
   .catch(err => {
     console.error(err);
-  });
+  })
 
 // // Exercise 2. Async Fetch.
 // ///////////////////////////
