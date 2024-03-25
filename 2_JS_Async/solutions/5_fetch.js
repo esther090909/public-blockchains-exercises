@@ -35,13 +35,13 @@
 // After reading the SWAPI doc, adjust the query variable below accordingly.
 
 // Require fetch.
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 // API address.
 const ENDPOINT = "https://swapi.dev/api/";
 
 // Change me.
-let query = 'YOU_NEED_TO_CHANGE_THIS';
+let query = 'people/1/';
 
 fetch(ENDPOINT + query)
   .then(res => {
@@ -69,7 +69,7 @@ fetch(ENDPOINT + query)
 
 // Let's do it again with the async/await pattern.
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 // API address.
 const ENDPOINT = "https://swapi.dev/api/";
@@ -119,7 +119,7 @@ let query = 'people/1';
 // Hint1: you might use a recursive solution.
 // Ref: https://javascript.info/recursion
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 let query = "people/";
 
@@ -153,7 +153,7 @@ doFetch();
 
 // Hint: you may use a while loop.
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 let query = "people/";
 
@@ -201,7 +201,7 @@ let fetchAll = async () => {
 
 // Hint: create all promises in a loop and them to an array.
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 let query = "people/";
 

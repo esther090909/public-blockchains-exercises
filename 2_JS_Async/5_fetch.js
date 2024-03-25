@@ -35,7 +35,7 @@
 // After reading the SWAPI doc, adjust the query variable below accordingly.
 
 // Require fetch.
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 // API address.
 const ENDPOINT = "https://swapi.dev/api/";
@@ -54,13 +54,14 @@ fetch(ENDPOINT + query)
     // Fetches gets the headers first, then it process
     // the body asynchronously. 
     
-    console.log(res);
+    // console.log(res);
 
     // It also returns a promise.
     return res.json();
   })
   .then(json => {
     console.log('We got: ' + json.name);
+    console.log(json);
   })
   .catch(err => {
     console.error(err);
@@ -71,15 +72,32 @@ fetch(ENDPOINT + query)
 
 // Let's do it again with the async/await pattern.
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 
 // Change me.
-let query = 'YOU_NEED_TO_CHANGE_THIS';
+let query = 'people/1/';
 
 // Hint: remember that await can be used only inside an async function.
 // If needed, you may create an anonimous async function.
 
+async function fetchLukeSkywalker() {
+  try {
+    const res = await fetch(ENDPOINT + query);
+    if (res.status >= 400) {
+      throw new Error("Bad response from server");
+    }
+    const json = await res.json();
+    console.log('We got: ' + json.name);
+    console.log(json);
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+fetchLukeSkywalker();
+
+//OR: See solution!
 
 // Exercise 3. Optional. Fetch them all.
 ////////////////////////////////////////
@@ -100,26 +118,77 @@ let query = 'YOU_NEED_TO_CHANGE_THIS';
 // Hint1: you might use a recursive solution.
 // Ref: https://javascript.info/recursion
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 let query = "people/";
 
 let db = [];
 let page = 1;
+
+let doFetch = (page = 1) => {
+  console.log('Fetching page ' + page);
+  fetch(ENDPOINT + query + '?page=' + page)
+    .then(res => {
+      if (res.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return res.json();
+    })
+    .then(json => {
+      db = [ ...db, ...json.results ];
+      // db = db.concat(json.results);
+      doFetch(++page);
+    })
+    .catch(err => {
+      console.log(`Fetched ${db.length} Star Wars characters.`);
+      // console.error(err);
+      // fetching = false;
+    });
+}
+
+doFetch();
 
 
 // b. Now let's do it with the async/await pattern.
 
 // Hint: you may use a while loop.
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 let query = "people/";
 
 let db = [];
 let page = 1;
 
+let fetchAll = async () => {
+  let db = [];
+  let fetching = true;
+  let page = 1;
+  try {
+    while(fetching) {
+      console.log('Fetching page ' + page);
+      const res = await fetch(ENDPOINT + query + '?page=' + page++);
 
+      if (res.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+
+      const json = await res.json();
+
+      db = [ ...db, ...json.results ];
+    }
+  }
+  catch(err) {
+    // console.error(err);
+    fetching = false;
+  }
+  return db;
+};
+
+(async() => {
+  let db = await fetchAll();
+  console.log(`Fetched ${db.length} Star Wars characters.`);
+})();
 
 // Exercise 4. Optional. Fetch them all faster.
 ///////////////////////////////////////////////
@@ -133,7 +202,7 @@ let page = 1;
 
 // Hint: create all promises in a loop and them to an array.
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const ENDPOINT = "https://swapi.dev/api/";
 let query = "people/";
 
@@ -142,3 +211,22 @@ let page = 1;
 
 let promises = new Array(9);
 
+for (let i = 0; i < promises.length; i++) {
+  promises[i] = fetch(ENDPOINT + query + "?page=" + page++).then((res) => {
+    if (res.status >= 400) {
+      throw new Error("Bad response from server");
+    }
+    return res.json();
+  });
+}
+
+Promise.all(promises)
+  .then((array) => {
+    for (let i = 0; i < array.length; i++) {
+      db = [ ...db, ...array[i].results ];
+    }
+    console.log(`Concurrently fetched ${db.length} Star Wars characters.`);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
