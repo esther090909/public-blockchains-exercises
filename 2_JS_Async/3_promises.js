@@ -55,7 +55,6 @@ comfortObj = 1/3;
 promise = new Promise(function(resolve, reject) {
   // Write the body of this promise.
   setTimeout(() => {
-    console.log('ASYNC');
     if (Math.random() <= comfortObj) resolve(true);
     else reject(false);
   }, 2000);
@@ -90,9 +89,9 @@ promise
   .then(res => console.log(`Yes, you are!`))
   .catch(res => console.log(`No, you are not.`))
   .finally(() => {
-    // Something here.
     exerciseIsOver = true;
-    console.log('Is exercise over?', '1', '2', '3', '...', 'Yes!');
-  });
+    console.log(exerciseIsOver ? 'Exercise is over' : 'Exercise is not over');
+  }
+  );
 
   
