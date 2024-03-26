@@ -35,8 +35,8 @@
 // be executed, until you tell the process to stop. 
 
 // This line will tell the process to stop.
-process.exit(0);
-console.log('I am a sad line...I will not be printed to console :(');
+// process.exit(0);
+// console.log('I am a sad line...I will not be printed to console :(');
 
 // a. Move the sad line above and below `process.exit(0);` to check that the
 // process stops where it is intended to. When you are done, comment out both
@@ -52,6 +52,10 @@ console.log('I am a sad line...I will not be printed to console :(');
 let exercise = 0;
 
 // Your code here!
+function exit() {
+    console.log(exercise);
+    process.exit(0);
+}
 
 // c. Bonus. Did you realize that JavaScript/Node.JS has three different ways
 // of declaring a function?
@@ -65,10 +69,28 @@ let exercise = 0;
 // use of the semicolon.
 
 // Checkpoint. Under what conditions can you reuse the same name (i.e., `exit`)
-// for all three functions? 
+// for all three functions?
+
+// Answer:
+// You cannot declare multiple functions with the same name in the same scope without
+// overwriting the previous definitions!
+// Scenarios where the same name could be reused without conflict:
+// 1. Different scopes: If each declaration is in a different scope, they won't conflict with each other
+// 2. Sequential use: Redefine the name in the same scope if you're done with the previous
+// definition --> Not recommended, can lead to confusion and bugs!
 
 // Your code here!
+// Function expression
+const exit = function() {
+    console.log(exercise);
+    process.exit(0);
+};
 
+// Arrow function
+const exit = () => {
+    console.log(exercise);
+    process.exit(0);
+};
 
 // Exercise 1. NPM Warm Up.
 ///////////////////////////
@@ -88,4 +110,4 @@ exercise = 1;
 
 require('dotenv').config();
 
-// exit();
+exit();
