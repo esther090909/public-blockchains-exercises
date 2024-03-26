@@ -27,6 +27,9 @@ console.log(pathToDotEnv);
 
 // Checkpoint. Does the value of the terminal depend 
 // on the directory of execution?
+// Yes! Because 'process.cwd()' returns the current working directory of the Node.js process.
+// The current working directory is the directory in which you're currently located in the
+// terminal when you run the Node.js script.
 
 
 // b. To avoid path issues, you can specify the path to the .env file manually
@@ -41,16 +44,24 @@ console.log(pathToDotEnv);
 
 // Edit this line, then load the .env file:
 // pathToDotEnv = path.join(...);
-console.log(pathToDotEnv);
 
-// Your code here.
+// const path = require('path');
+pathToDotEnv = path.join(__dirname, '..', '.env');
+console.log(pathToDotEnv);
+require("dotenv").config({ path: pathToDotEnv });
+
 
 // c. Bonus. Load the 'fs' native module and use the method `existsSync` to 
 // check if the path to the .dotenv file is correct.
 
-// Your code here.
+const fs = require('fs');
+let exists = fs.existsSync(pathToDotEnv);
+console.log(`Does the .env file exist at the path "${pathToDotEnv}"?`, exists);
 
-
+// OR:
+if (fs.existsSync(pathToDotEnv)) {
+    console.log('You found the .env file!');
+}
 
 
 // Exercise 2. Create and fill in .env file.
@@ -76,7 +87,14 @@ exercise = 2;
 // MetaMask, e.g.: https://www.youtube.com/watch?v=KSY_bSkzb9c
  
 // See if it worked.
-console.log(process.env);
+
+// const path = require('path');
+pathToDotEnv = path.join(__dirname, '..', '.env');
+console.log(pathToDotEnv);
+require("dotenv").config({ path: pathToDotEnv });
+console.log(process.env.METAMASK_1_ADDRESS);
+console.log(process.env.METAMASK_1_PRIVATE_KEY);
+// console.log(process.env);
 
 // exit();
 
@@ -92,7 +110,12 @@ exercise = '3a';
 // if statement that prints a warning message if empty.
 // Hint: https://javascript.info/ifelse
 
-// Your code here!
+console.log(process.env.METAMASK_ACCOUNT_1);
+
+let privateKey = process.env.METAMASK_1_PRIVATE_KEY;
+if (privateKey === "") {
+    console.log('Missing private key, fix your .env file');
+}
 
 // exit();
 
@@ -102,9 +125,16 @@ exercise = '3a';
 
 exercise = '3b';
 
-// Your code here!
+let variablesToCheck = [
+    "INFURA_KEY", "INFURA_SEPOLIA", "INFURA_GOERLI", "INFURA_MAINNET",
+    "ALCHEMY_KEY", "ALCHEMY_SEPOLIA", "ALCHEMY_GOERLI", "ALCHEMY_MAINNET",
+    "METAMASK_1_ADDRESS", "METAMASK_1_PRIVATE_KEY",
+    "METAMASK_2_ADDRESS", "METAMASK_2_PRIVATE_KEY",
+    "ETHERSCAN_KEY"
+];
 
-// exit();
+console.log('Num of variables in .env to check: ', variablesToCheck.length);
+
 
 // c. Loop through all the elements of the array and check that the variable
 // is set and non-empty under `process.env`.
@@ -116,14 +146,26 @@ exercise = '3b';
 
 // Solution 1. forEach.
 variablesToCheck.forEach(v => {
-    // Your code here!
+    if (!process.env[v]) {
+        console.log(process.env[v])
+        console.log(`Missing ${v}, fix your .env file`);
+    }
 });
+
 
 // Solution 2. For-loop.
 
-// Your code here!
+for (let index = 0; index < variablesToCheck.length; index++) {
+    const v = variablesToCheck[index];
+    if (!process.env[v]) {
+        console.log(process.env[v])
+        console.log(`Missing ${v}, fix your .env file`);
+    }
+}
 
+// Checkpoint. Is !process.env[v] equivalent to process.env[v] === "" ?
+// No! !process.env[v] is true for any falsy value of process[v] including 'undefined',
+// 'null', '0', 'NaN', 'false', and "". process.env[v] === "" is only true if process[v]
+// is exactly an empty string!
 
-// exit();
-
-
+exit();
