@@ -86,16 +86,16 @@ breadAndButter();
 // Let's try out async now: set doAsync to true.
 // Does the output makes sense?
 
-let doAsync = true;
-let doSilly = false;
-let doThrow = false;
+// let doAsync = true;
+// let doSilly = false;
+// let doThrow = false;
 
 function yummy() {
   console.log('\nYummy!\n');
 }
 
-let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
-  require("./lib/actions.js")(doAsync, doSilly, doThrow);
+// let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
+//  require("./lib/actions.js")(doAsync, doSilly, doThrow);
 
 // Run the async version of breadAndButter() and observe what happens.
 
@@ -130,16 +130,16 @@ breadAndButter();
 
 // Remember that only openFridge, takeButter and sliceBread can be async.
 
-let doAsync = true;
-let doSilly = false;
-let doThrow = false;
+// let doAsync = true;
+// let doSilly = false;
+// let doThrow = false;
 
 function yummy() {
   console.log('\nYummy!\n');
 }
 
-let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
-  require("./lib/actions_cb.js.js")(doAsync, doSilly, doThrow);
+// let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
+//  require("./lib/actions_cb.js")(doAsync, doSilly, doThrow);
 
 
 function breadAndButterCb() {
@@ -151,6 +151,15 @@ function breadAndButterCb() {
   console.log();
   
   // Write the async invocation code with callbacks here.
+  openFridge(() => {
+    takeButter(() => {
+      takeBread();
+      sliceBread(() => {
+        spreadButter();
+        yummy();
+      });
+    });
+  });
 }
 
 breadAndButterCb();
@@ -174,16 +183,16 @@ breadAndButterCb();
 // the function is immediately evaluated. 
 // You will need a function that creates new promises only when needed.
 
-let doAsync = true;
-let doSilly = false;
-let doThrow = false;
+// let doAsync = true;
+// let doSilly = false;
+// let doThrow = false;
 
 function yummy() {
   console.log('\nYummy!\n');
 }
 
-let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
-   require("./lib/actions_promise.js.js")(doAsync, doSilly, doThrow);
+// let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
+//   require("./lib/actions_promise.js")(doAsync, doSilly, doThrow);
 
 // Promises are executed immediately when created, so we need a function
 // that to create them only when we need them!
@@ -203,7 +212,23 @@ function breadAndButterPromise() {
   console.log();
 
    // Write the async invocation code with promises here.
-
+   promiseIt('openFridge')
+   .then(() => promiseIt('takeButter'))
+   .then(() => { 
+     takeBread();
+     promiseIt('sliceBread')
+       .then(() => { 
+         spreadButter();
+          yummy();
+     })
+     .catch(err => {
+       console.log('An error happened while slicing the bread.', err)
+     })
+     .finally(() => console.log('Finally!'));
+   })
+   .catch(err => {
+     console.log('An error happened either taking the butter or slicing the bread:', err)
+   })
 }
 
 breadAndButterPromise();
@@ -212,7 +237,7 @@ breadAndButterPromise();
 //////////////
 
 // Fix the async version of the Bread and Butter of async programming
-// using the Promise pattern. You will need to:
+// using the Await pattern. You will need to:
 
 // 1- Copy "./lib/actions.js" and save it as "./lib/actions_await.js", 
 // 2- Edit "./lib/actions_await.js" to implement the async/await pattern,
@@ -221,16 +246,16 @@ breadAndButterPromise();
 
 // Remember that only openFridge, takeButter and sliceBread can be async.
 
-let doAsync = true;
-let doSilly = false;
-let doThrow = false;
+// let doAsync = true;
+// let doSilly = false;
+// let doThrow = false;
 
 function yummy() {
   console.log('\nYummy!\n');
 }
 
-let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
-  require("./lib/actions_await.js.js")(doAsync, doSilly, doThrow);
+// let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
+//  require("./lib/actions_await.js")(doAsync, doSilly, doThrow);
 
   
 async function breadAndButterAwait() {
@@ -241,6 +266,12 @@ async function breadAndButterAwait() {
     console.log();
     
     // Write the async invocation code with async/await here.
+    await openFridge();
+    await takeButter();
+    takeBread();
+    await sliceBread();
+    spreadButter();
+    yummy();
 }
   
 breadAndButterAwait();
@@ -249,5 +280,3 @@ breadAndButterAwait();
 //////////////
 
 // Try setting doSilly or doThrow to true in the previous exercises.
-
-

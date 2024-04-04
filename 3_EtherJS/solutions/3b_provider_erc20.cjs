@@ -64,6 +64,4 @@ const link = async () => {
 };
 
 
-// link();
-
-
+link();

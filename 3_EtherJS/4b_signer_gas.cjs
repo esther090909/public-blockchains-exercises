@@ -4,12 +4,21 @@ const path = require('path');
 // Ethers JS: Signers: Gas and Transactions.
 ////////////////////////////////////////////
 
+pathToDotEnv = path.join(__dirname, '..', '.env');
+require("dotenv").config({ path: pathToDotEnv });
+const ethers = require("ethers");
+
+const providerKey = process.env.ALCHEMY_KEY;
+const sepoliaUrl = `${process.env.ALCHEMY_SEPOLIA_API_URL}${providerKey}`;
+const sepoliaProvider = new ethers.JsonRpcProvider(sepoliaUrl);
+
+let signer = new ethers.Wallet(process.env.METAMASK_1_PRIVATE_KEY, sepoliaProvider);
+console.log(signer.address);
+
 // Exercise 1. Meddling with Gas.
 /////////////////////////////////
 
-// Let's play around with the gas parameters to try to get into a block
-// a bit cheaper.
-
+// Let's play around with the gas parameters to try to get into a block a bit cheaper.
 // First we need to understand how gas works in Ethereum. 
 
 // Begin long intro.
@@ -65,13 +74,40 @@ const path = require('path');
 // Hint: the simple math is also explained in one of the links above.
 
 // a, b, c. 
+const account2 = process.env.METAMASK_2_ADDRESS;
+
 const checkGasPrices = async () => {
+    setInterval(async () => {
+        let tx = await signer.populateTransaction({
+            to: account2,
+            value: ethers.parseEther("0.01"),
+        });
+    
+        // console.log(tx);
+    
+        console.log('Gas Limit', tx.gasLimit);
+        console.log('Max Fee per Gas (GWEI)', ethers.formatUnits(tx.maxFeePerGas, 'gwei'));
+        console.log('Max Priority Fee (GWEI)', ethers.formatUnits(tx.maxPriorityFeePerGas, 'gwei'));
 
-    // Your code here!
+        console.log('---');
+        const feeData = await sepoliaProvider.getFeeData();
+        // console.log(feeData)
+    
+        console.log('Legacy Gas Price (GWEI)', ethers.formatUnits(feeData.gasPrice, 'gwei'));
+        console.log('Max Fee per Gas (GWEI)', ethers.formatUnits(feeData.maxFeePerGas, 'gwei'));
+        console.log('Max Priority Fee (GWEI)', ethers.formatUnits(feeData.maxPriorityFeePerGas, 'gwei'));
+        
+        console.log('');
+        const lastBlock = await sepoliaProvider.getBlock("latest");
+        console.log('Base Fee Previous Block (GWEI)', ethers.formatUnits(lastBlock.baseFeePerGas, 'gwei'));
 
+        // maxFeePerGas = (2 * baseFeePerGas) + maxPriorityFeePerGas
+        console.log('');
+
+    }, 1000);
 };
 
-// checkGasPrices();
+checkGasPrices();
 
 // d. Now that you understand everything, send a new transaction that is just
 // a little cheaper in terms of gas, compared to defaults.
@@ -89,12 +125,32 @@ const checkGasPrices = async () => {
 // d. e.
 const sendCheaperTransaction = async () => {
 
-    // Your code here!
+    const feeData = await sepoliaProvider.getFeeData();
+    // console.log(feeData)
 
+    console.log('Legacy Gas Price (GWEI)', ethers.formatUnits(feeData.gasPrice, 'gwei'));
+    console.log('Max Fee per Gas (GWEI)', ethers.formatUnits(feeData.maxFeePerGas, 'gwei'));
+    console.log('Max Priority Fee (GWEI)', ethers.formatUnits(feeData.maxPriorityFeePerGas, 'gwei'));
+
+    let adjMaxFeePerGas = feeData.maxFeePerGas - 1500000000n;
+    if (adjMaxFeePerGas < 0) {
+        console.log("Adjusted maxFeePerGas is negative, setting to a minimum value.");
+        adjMaxFeePerGas = 1000000000n;
+    }
+
+    tx = await signer.sendTransaction({
+        to: account2,
+        value: ethers.parseEther("0.01"),
+        maxFeePerGas: adjMaxFeePerGas
+    });
+
+    console.log('Transaction is in the mempool...');
+    let receipt = await tx.wait();
+    console.log(receipt);
+    console.log('Transaction mined!');
 };
 
-// sendCheaperTransaction();
-
+sendCheaperTransaction();
 
 
 // Exercise 6. Resubmitting a transaction.
@@ -102,7 +158,7 @@ const sendCheaperTransaction = async () => {
 
 // Let's get a transaction pending in the mempool for a long time. It is 
 // quite difficult to do it with Ethers.JS because it prevents to send
-// transactions with too low maxFeePerGas. You could try setting a ver low
+// transactions with too low maxFeePerGas. You could try setting a very low
 // `maxPriorityFeePerGas` but some miner might pick up your transaction 
 // nonetheless (btw the bare minimum you should tip the miner is 1 wei, 
 // but around 2 gwei is usually considered a safe choice).
@@ -129,7 +185,33 @@ const sendCheaperTransaction = async () => {
 
 const resubmitTransaction = async () => {
 
-    // Your Code here!
+    // If there is a transaction in the mempool, it returns the same nonce,
+    // otherwise the _next_ one.
+    // let nonce = await signer.getNonce();
+    // Equivalent to:
+    let nonce = await sepoliaProvider.getTransactionCount(signer.address);
+
+    // Note: the line below will return the _next_ nonce when there is
+    // already a transaction in the mempool.
+    let nextNonce = await signer.getNonce("pending");
+
+    console.log('Nonce is:', nonce);
+
+    const feeData = await sepoliaProvider.getFeeData();
+    
+    tx = await signer.sendTransaction({
+        to: account2,
+        value: ethers.parseEther("0.001"),
+        maxFeePerGas: 2n*feeData.maxFeePerGas,
+        maxPriorityFeePerGas: 2n*feeData.maxPriorityFeePerGas,
+        nonce: nonce
+    });
+    console.log(tx);
+    
+    console.log('Transaction is in the mempool...');
+    let receipt = await tx.wait();
+    console.log(receipt);
+    console.log('Transaction mined!');
 
 };
 
@@ -141,8 +223,27 @@ resubmitTransaction();
 // equal to sender address.
 
 const cancelTransaction = async () => {
+// If there is a transaction in the mempool, it returns the
+   // same nonce, otherwise the _next_ one.
+   let nonce = await signer.getNonce();
 
-    // Your Code here!
+   console.log('Nonce is:', nonce);
+
+   const feeData = await sepoliaProvider.getFeeData();
+   
+   tx = await signer.sendTransaction({
+       to: signer.address,
+       value: ethers.parseEther("0.0"),
+       maxFeePerGas: 2n*feeData.maxFeePerGas,
+       maxPriorityFeePerGas: 2n*feeData.maxPriorityFeePerGas,
+       nonce: nonce
+   });
+   console.log(tx);
+   
+   console.log('Transaction is in the mempool...');
+   let receipt = await tx.wait();
+   console.log(receipt);
+   console.log('Transaction mined!');
 };
 
 cancelTransaction();

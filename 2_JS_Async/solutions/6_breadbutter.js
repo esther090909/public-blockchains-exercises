@@ -242,7 +242,7 @@ breadAndButterPromise();
 //////////////
 
 // Fix the async version of the Bread and Butter of async programming
-// using the Promise pattern. You will need to:
+// using the Await pattern. You will need to:
 
 // 1- Copy "./lib/actions.js" and save it as "./lib/actions_await.js", 
 // 2- Edit "./lib/actions_await.js" to implement the async/await pattern,
@@ -263,7 +263,7 @@ function yummy() {
 }
 
 let { openFridge, takeButter, takeBread, sliceBread, spreadButter } = 
-  require("./lib/actions_await.js")(doAsync, doSilly, doThrow);
+  require("./actions_await.js")(doAsync, doSilly, doThrow);
 
   
 async function breadAndButterAwait() {
@@ -288,5 +288,3 @@ breadAndButterAwait();
 //////////////
 
 // Try setting doSilly or doThrow to true in the previous exercises.
-
-

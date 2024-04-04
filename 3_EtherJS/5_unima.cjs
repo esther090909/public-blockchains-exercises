@@ -7,7 +7,10 @@
 // a. Require the `dotenv` and `ethers` packages.
 // Hint: As you did multiple times now.
 
-// Your code here!
+const path = require('path');
+pathToDotEnv = path.join(__dirname, '..', '.env');
+require("dotenv").config({ path: pathToDotEnv });
+const ethers = require("ethers");
 
 
 // Exercise 1. Create a JSON RPC Provider for the (not) UniMa Blockchain.
@@ -26,7 +29,8 @@
 // b. Create the JSON RPC provider object.
 // Hint: only accessible within UniMa network.
 
-// Your code here!
+const notUniMaUrl = process.env.NOT_UNIMA_URL_1;
+const notUniMaProvider = new ethers.JsonRpcProvider(notUniMaUrl);
 
 // Exercise 2. Let's query the provider.
 ////////////////////////////////////////
@@ -35,12 +39,16 @@
 // Print to console the network name, chain id, and block number of NUMA.
 
 const networkInfo = async () => {
-    
-    // Your code here!
+    let net = await notUniMaProvider.getNetwork();
+    console.log('NUMA Info:');
+    console.log('Network name: ', net.name);
+    console.log('Network chain id: ', Number(net.chainId));
 
+    let blockNumber = await notUniMaProvider.getBlockNumber();
+    console.log('Block number: ', blockNumber);
 };
 
-// networkInfo();
+networkInfo();
 
 
 // Exercise 3. Connect a signer to the (not) UniMa blockchain.
@@ -48,20 +56,21 @@ const networkInfo = async () => {
 
 // a. Use the same non-sensitive private key used in 3_signer.js.
 
-// Your code here!
+let signer = new ethers.Wallet(process.env.METAMASK_1_PRIVATE_KEY, notUniMaProvider);
+console.log(signer.address);
 
 // b. Print the next nonce necessary to send a transaction.
 // Hint: .getNonce()
 
 const getNonce = async() => {
-    
-    // Your code here!
+    let nonce = await signer.getNonce();
+    console.log('Your nonce is ' + nonce);
 };
 
-// getNonce();
+getNonce();
 
 // Checkpoint. Is the nonce in the (not) Unima blockchain different
-// than in Goerli?
+// than in Sepolia? YES! (no transactions yet)
 
 
 // Exercise 4. Check gas.
@@ -74,12 +83,11 @@ const getNonce = async() => {
 // b. Check your balance on UniMa network.
 
 const checkBalance = async () => {
-
-   // Your code here!
-
+    let balance = await notUniMaProvider.getBalance(signer.address);
+    console.log('My balance is ' + ethers.formatEther(balance) + ' NUMETH.');
 };
 
-// checkBalance();
+checkBalance();
 
 // Exercise 5. Send a transaction.
 //////////////////////////////////
@@ -89,11 +97,32 @@ const checkBalance = async () => {
 const account2 = process.env.METAMASK_2_ADDRESS;
 
 const sendTransaction = async () => {
+    let b1 = await notUniMaProvider.getBalance(signer.address);
+    let b2 = await notUniMaProvider.getBalance(account2);
+    b1 = ethers.formatEther(b1);
+    b2 = ethers.formatEther(b2);
 
-   // Your code here!
+    tx = await signer.sendTransaction({
+        to: account2,
+        value: ethers.parseEther("0.01")
+    });
+
+    // console.log(tx);
+    
+    console.log('Transaction is in the mempool...');
+    await tx.wait();
+
+    console.log('Transaction mined!');
+
+    let updatedB1 = await notUniMaProvider.getBalance(signer.address);
+    let updatedB2 = await notUniMaProvider.getBalance(account2);
+    updatedB1 = ethers.formatEther(updatedB1);
+    updatedB2 = ethers.formatEther(updatedB2);
+
+    console.log('Balance for', signer.address, 'changed from', b1, 'to', updatedB1);
+    console.log('Balance for', account2, 'changed from', b2, 'to', updatedB2);
 };
 
-// sendTransaction();
+sendTransaction();
 
-// Checkpoint. Can you send your ETH from NUMA to Sepolia?
-
+// Checkpoint. Can you send your ETH from NUMA to Sepolia? No.
