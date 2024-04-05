@@ -23,7 +23,7 @@
 const hre = require("hardhat");
 console.log('Hardhat\'s default network:', hre.config.defaultNetwork);
 
-return;
+// return;
 
 
 // Exercise 1. Understand Ethers in Hardhat.
@@ -34,14 +34,15 @@ return;
 
 // a. Require ethers (as an npm package) and print its version to console.
 
-// Your code here!
+const ethers = require("ethers");
+console.log("Ethers version:", ethers.version);
 
-return;
+// return;
 
 // b. Now prints the the version of the Hardhat's plugin available under
 // hre.ethers.
 
-// Your code here!
+console.log("HH Wrapped Ethers version:", hre.ethers.version);
 
 return;
 
