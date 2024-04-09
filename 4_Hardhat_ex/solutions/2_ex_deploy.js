@@ -23,8 +23,6 @@
 const hre = require("hardhat");
 console.log('Hardhat\'s default network:', hre.config.defaultNetwork);
 
-// return;
-
 
 // Exercise 1. Understand Ethers in Hardhat.
 ////////////////////////////////////////////
@@ -37,14 +35,12 @@ console.log('Hardhat\'s default network:', hre.config.defaultNetwork);
 const ethers = require("ethers");
 console.log("Ethers version:", ethers.version);
 
-// return;
 
 // b. Now prints the the version of the Hardhat's plugin available under
 // hre.ethers.
 
 console.log("HH Wrapped Ethers version:", hre.ethers.version);
 
-// return;
 
 // Exercise 1. Create a new Solidity contract.
 //////////////////////////////////////////////
@@ -96,7 +92,6 @@ async function main() {
 
   console.log("HH Signer address:", hhSigner.address);
 
-  // return
 
   // c. Get your new contract. Hardhat Ethers automatically fetches the ABI from
   // the artifacts, so you don't need to specify it. Use the method
@@ -111,7 +106,6 @@ async function main() {
   
   console.log(contractName + " address", lock.target);
 
-  // return
 
   // d. Bonus. You can get the contract also without Hardhat's wrapped Ethers.
   // The standard Ethers.JS requires a bit more code, but is is 
@@ -140,7 +134,6 @@ async function main() {
 
   const lock2 = await getContractManual();
 
-  // return
   
   // e. Print out the public variables of the contract: owner and unlockTime.
   // Hint: Public variables have automatic getters that can be invoked.
