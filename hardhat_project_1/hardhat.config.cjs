@@ -1,6 +1,7 @@
 require('dotenv').config();
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-ignition-ethers");
+require("@nomicfoundation/hardhat-verify");
 const { vars } = require("hardhat/config");
 
 const ETHERSCAN_API_KEY = vars.get("ETHERSCAN_API_KEY");
@@ -24,5 +25,8 @@ module.exports = {
   solidity: "0.8.24",
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
+  },
+  sourcify: {
+    enabled: false,
   },
 };

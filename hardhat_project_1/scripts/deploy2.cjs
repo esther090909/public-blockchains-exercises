@@ -75,23 +75,45 @@ console.log("HH Wrapped Ethers version:", hre.ethers.version);
 
 // a. Update with your contract's name and address.
 // Hint: The address is known only after deployment.
-const contractName = "Lock2";
-const contractAddress = "0x82D81d66528aed29a2A9657FEB2dD5Ff0dDF2263";
+// const contractName = "Lock2";
+// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 // Let's continue inside the async main function (the recommended Hardhat
 // pattern of execution).
 
 async function main() {
+
+  // Deployment script:
+
+  const currentTimestampInSeconds = Math.floor(Date.now() / 1000);
+  const unlockTime = currentTimestampInSeconds + 1200;
+  const lockedAmount = hre.ethers.parseEther("0.01");
+  console.log(`Current Timestamp: ${currentTimestampInSeconds}`);
+  console.log(`Unlock Time (should be future): ${unlockTime}`);
+
+  const lock2 = await hre.ethers.deployContract("Lock2", [unlockTime], {
+    value: lockedAmount,
+  })
+
+  await lock2.waitForDeployment();
+
+  console.log(
+    `Lock2 with ${ethers.formatEther(
+      lockedAmount
+    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock2.target}`
+  );
+
+  // End
   
   // b. Get the first of the default Hardhat signers. Print its address, and
   // checks that it matches the first address printed to console when you
   // execute: npx hardhat node
   // Hint: hre.ethers.getSigners() returns an array.
 
-  const hardhatSigners = await hre.ethers.getSigners();
-  const hhSigner = hardhatSigners[0];
-
-  console.log("HH Signer address:", hhSigner.address);
+  // const hardhatSigners = await hre.ethers.getSigners();
+  // const hhSigner = hardhatSigners[0];
+  // const hhAddress = hhSigner.address;
+  // console.log("HH Signer address:", hhAddress);
 
   // return;
 
@@ -100,8 +122,8 @@ async function main() {
   // hre.ethers.getContractAt(<name>, <address>, <signer>)
   // then print the contract address.
 
-  const lock2 = await hre.ethers.getContractAt(contractName, contractAddress, hhSigner);
-  console.log(contractName + " address", lock2.target);
+  // const lock2 = await hre.ethers.getContractAt(contractName, contractAddress, hhSigner);
+  // console.log(contractName + " address", lock2.target);
 
   // return;
 
@@ -110,35 +132,35 @@ async function main() {
   // useful to understand how it works.
 
   // const getContractManual = async(signer = hhSigner, 
-  //                                address = contractAddress) => {
+  //                                 address = contractAddress) => {
     
     // d.1 Fetch the ABI from the artifacts 
     // (it expects contract name = file name).
 
     // const lock2ABI = require("../artifacts/contracts/" + contractName + 
-    //                        ".sol/" + contractName + ".json").abi;
+    //                         ".sol/" + contractName + ".json").abi;
 
     // d.2 Create the contract and print the address.
 
-    // const lock = new ethers.Contract(address, lock2ABI, signer);
+    // const lock2 = new ethers.Contract(address, lock2ABI, signer);
 
-    // console.log(contractName + " address standard Ethers", lock.target);
+    // console.log(contractName + " address standard Ethers", lock2.target);
 
-    // return lock;
+    // return lock2;
 
-  //};
+  // };
 
   // const lock2 = await getContractManual();
   
   // e. Print out the public variables of the contract: owner and unlockTime.
   // Hint: Public variables have automatic getters that can be invoked.
 
-  const readContract = async (lock2Contract = lock2) => {
+  // const readContract = async (lock2Contract = lock2) => {
       
     // Print the owner of the lock.
    
-    const owner = await lock2.owner();
-    console.log("Owner of " + contractName, owner);
+    // const owner = await lock2.owner();
+    // console.log("Owner of " + contractName, owner);
 
     // Print the unlock time. 
     // Be careful! You will get a BigInt, you need first
@@ -147,14 +169,14 @@ async function main() {
     // https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
     // https://stackoverflow.com/questions/53970655/how-to-convert-bigint-to-number-in-javascript
 
-    let unlockTime = await lock2.unlockTime();
-    unlockTime = Number(unlockTime);
-    console.log(contractName + " unlock timestamp:", unlockTime);
-    let date = new Date((unlockTime * 1000));
-    console.log(contractName + " unlock date:", date);
-  };
+  //   let unlockTime = await lock2.unlockTime();
+  //   unlockTime = Number(unlockTime);
+  //   console.log(contractName + " unlock timestamp:", unlockTime);
+  //   let date = new Date((unlockTime * 1000));
+  //   console.log(contractName + " unlock date:", date);
+  // };
 
-  await readContract();
+//   await readContract();
 
 }
 

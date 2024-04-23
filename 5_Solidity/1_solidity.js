@@ -43,15 +43,27 @@
 
 // a. What is the meaning of the `pragma` directive at the top of the file?
 // Hint: https://solidity-by-example.org/hello-world/
+// It sets the version of solidity the compiler must support
 
 // b. The pragma value must be compatible with the version of solidity
 // in `hardhat.config.js. Try to set the value to a lower or higher number
 // and to compile the Lock file. What happens?
 // Hint: npx hardhat compile
 
+// Message: Solidity 0.8.25 is not fully supported yet. You can still use Hardhat,
+// but some features, like stack traces, might not work correctly.
+
+// Or: The Solidity version pragma statement in these files doesn't match any of the
+// configured compilers in your config. Change the pragma or configure additional
+// compiler versions in your hardhat config.
+// * contracts/Lock.sol (^0.8.24)
+// * contracts/Lock2.sol (^0.8.24)
+
 // c. Checkpoint. What is the meaning of that caret symbol (^) ?
 // Hint: https://docs.soliditylang.org/en/develop/layout-of-source-files.html#version-pragma
 // Hint2: https://bytearcher.com/articles/semver-explained-why-theres-a-caret-in-my-package-json/
+// It means that it doesn't compile with a compiler earlier than version 0.8.24,
+// and it doesn't work on a compiler starting from version 0.9.0!
 
 // c. Before `pragma` there is an important comment tha sets the license of
 // the contract. Pick a license for your contract.
@@ -268,7 +280,7 @@ async function getAllEvents() {
 // https://solidity-by-example.org/mapping/
 
 // Let's modify the Lock contract to support multiple owners and fractional
-// widthdrawals. Let's call the new contract Lock4.
+// withdrawals. Let's call the new contract Lock4.
 
 // a. The first owner is the creator of the contract, but owners can 
 // be added at any time.
