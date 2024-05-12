@@ -41,9 +41,15 @@ contract MyERC20 is IERC20 {
         return balances[tokenOwner];
     }
 
-    function transfer(address receiver, uint256 numTokens) public returns (bool) {
-        
-        // Your code here!
+    function transfer(address receiver, uint256 numTokens)
+        // Check balance.
+        require(numTokens <= balances[msg.sender]);
+        // Transfer.
+        balances[msg.sender] -= numTokens;
+        balances[receiver] += numTokens;
+        // Emit.
+        emit Transfer(msg.sender, receiver, numTokens);
+        return true;
     }
 
     function approve(address delegate, uint256 numTokens) public returns (bool) {
