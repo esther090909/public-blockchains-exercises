@@ -5,7 +5,7 @@ pragma solidity ^0.8.17;
 // import "hardhat/console.sol";
 
 // Create contract > define Contract Name
-contract TestContract {
+contract Greeting {
 
     // State: waiting, starting, playing, revealing, finished.
     string public greeting = "Hello!";

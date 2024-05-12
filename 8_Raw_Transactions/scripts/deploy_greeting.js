@@ -8,13 +8,13 @@ const hre = require("hardhat");
 
 async function main() {
   
-  const TestContract = await hre.ethers.getContractFactory("TestContract");
-  const tc = await TestContract.deploy();
+  const Greeting = await hre.ethers.getContractFactory("Greeting");
+  const tc = await Greeting.deploy();
 
   await tc.deployed();
 
   console.log(
-    `Test Contract deployed to ${tc.address}`
+    `Test Contract deployed to ${tc.target}`
   );
 }
 

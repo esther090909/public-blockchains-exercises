@@ -1,39 +1,20 @@
 const path = require('path');
-const pathToEnv = path.join(__dirname, '..', '..', '..', '.env');
-require("dotenv").config({ path: pathToEnv });
+const pathToDotEnv = path.join(__dirname, '..', '..', '.env');
+require("dotenv").config({ path: pathToDotEnv });
 
 
-const { BigNumber, ethers } = require("ethers");
+const { ethers } = require("ethers");
 console.log(ethers.version);
 
 // Todo: Update this contract address.
-const cAddress = "0x09635F643e140090A9A8Dcd712eD6285858ceBef";
-const cName = "TestContract";
-
-const localhostProvider = new ethers.providers.JsonRpcProvider(
-    "http://127.0.0.1:8545"
-);
-
-// Hardhat.
-// const [signer1, signer2] = await hre.ethers.getSigners();
-
-let signer = new ethers.Wallet(
-    process.env.HARDHAT_1_PRIVATE_KEY,
-    localhostProvider
-);
-// console.log("Signer 1: ", signer.address);
-
-let deployer = new ethers.Wallet(
-    process.env.HARDHAT_2_PRIVATE_KEY,
-    localhostProvider
-);
-// console.log("Signer 2: ", deployer.address);
+const cAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const cName = "Greeting";
 
 const getContract = async (
     signer = deployer
 ) => {
     // Fetch the ABI from the artifacts.
-    const cABI = require("../../artifacts/contracts/" +
+    const cABI = require("../artifacts/contracts/" +
         cName +
         ".sol/" +
         cName +
@@ -79,7 +60,13 @@ const getContract = async (
 // Hint: No parentheses.
 
 const rawTransactionBasic = async () => {
-    console.log("Exercise 1. Raw Transactions with Encoding frmo Hashex.org.");
+    
+    const [signer, deployer] = await hre.ethers.getSigners();
+    console.log("Signer 1: ", signer.address);
+    console.log("Signer 2: ", deployer.address);
+    console.log();
+
+    console.log("Exercise 1. Raw Transactions with Encoding from Hashex.org.");
     console.log();
     
     const contract = await getContract(deployer);
@@ -100,7 +87,7 @@ const rawTransactionBasic = async () => {
     console.log();
 
     // Fill in this value with the encoded signature of reset():
-    let encodedSignature = "d826f88f";
+    let encodedSignature = "ENCODED_SIGNATURE_HERE"; 
     let calldata = "0x" + encodedSignature;
 
     // Raw transaction.
@@ -134,14 +121,21 @@ const rawTransactionBasic = async () => {
 // Luckily, we have worked with Keccack256 in the previous exercise sheet.
 // It is time to send your first raw transaction.
 
+
+// Takes a function's signature as input and returns the Keccak256 hash.
 const doKeccak256 = (signature) => {
-    // Convert string to bytes.
-    signature = ethers.utils.toUtf8Bytes(signature);
-    // Hash the bytes.
-    return ethers.utils.keccak256(signature);
+
+    // Your code here.
+
 };
 
 const rawTransactionDIY = async () => {
+
+    const [signer, deployer] = await hre.ethers.getSigners();
+    console.log("Signer 1: ", signer.address);
+    console.log("Signer 2: ", deployer.address);
+    console.log();
+
     console.log("Exercise 2. Raw Transactions with Own Encoding.");
     console.log();
 
@@ -168,9 +162,10 @@ const rawTransactionDIY = async () => {
     let calldata = doKeccak256(signature);
     console.log("Hashed signature:", calldata);
 
-    // Take the first 4 bytes.
-    calldata = calldata.substring(0, 10); // 8 + 2 (0x).
-    console.log("Taking 4 Bytes:  ", calldata);
+
+    // Your code here!
+    // let calldata = ... ;
+
 
     const tx = await signer.sendTransaction({
         to: cAddress,
@@ -200,7 +195,6 @@ const rawTransactionDIY = async () => {
 
 // Let's start with the simple case, static types.
 
-
 // Hint: In Ethers v5, the function `hexZeroPad()` can help.
 
 // Hint2: You can compare your own encoding with the output from
@@ -211,16 +205,18 @@ const rawTransactionDIY = async () => {
 // and return the first 4 bytes. Optionally, takes a verbose
 // parameter to print to console its operations.
 const encodeSignature = (signature, verbose) => {
-    // Hash the signature with Keccak256.    
-    let hashed = doKeccak256(signature);
-    if (verbose) console.log("Hashed signature:", hashed);
-    // Take the first 4 bytes.
-    hashed = hashed.substring(0, 10); // 8 + 2 (0x).
-    if (verbose) console.log("Taking 4 Bytes:  ", hashed);
-    return hashed;
+    
+    // Your code here.
+
 };
 
 const rawTransactionStaticParams = async () => {
+
+    const [signer, deployer] = await hre.ethers.getSigners();
+    console.log("Signer 1: ", signer.address);
+    console.log("Signer 2: ", deployer.address);
+    console.log();
+
     console.log("Exercise 3. Raw Transactions with Static Types.");
     console.log();
 
@@ -237,13 +233,9 @@ const rawTransactionStaticParams = async () => {
     // Hash the signature with Keccak256 and takes 4 bytes.
     let encodedSignature = encodeSignature(signature);
 
-    // v5 function.
-    let encodedParam = ethers.utils.hexZeroPad(1, 32);
-    encodedParam = encodedParam.substring(2);
-    console.log(encodedParam);
+    // Your code here.
 
-    calldata = encodedSignature + encodedParam;
-    console.log("Calldata:      ", calldata);
+    // let calldata = ... ;
 
     console.log();
     console.log("**Raw transaction**: chooseGreeting(uint8)");
@@ -299,6 +291,12 @@ const rawTransactionStaticParams = async () => {
 // https://abi.hashex.org/
 
 const rawTransactionDynamicParams = async () => {
+
+    const [signer, deployer] = await hre.ethers.getSigners();
+    console.log("Signer 1: ", signer.address);
+    console.log("Signer 2: ", deployer.address);
+    console.log();
+
     console.log("Exercise 4. Raw Transactions with Dynamic Types.");
     console.log();
 
@@ -318,13 +316,9 @@ const rawTransactionDynamicParams = async () => {
     // Encode String parameter "Buongiorno", or get inspired here:
     // https://www.berlitz.com/blog/hello-different-languages
 
-    const abc = new ethers.utils.AbiCoder();
-    let encodedParam = abc.encode(["string"], ["Buongiorno"]);
-    encodedParam = encodedParam.substring(2);
-    console.log("Encoded params:", encodedParam);
-
-    calldata += encodedParam;
-    console.log("Calldata:      ", calldata);
+   
+    // Your code here.
+    // let calldata = ... ;
 
     console.log();
     console.log("**Raw transaction**: setGreeting(string)");
