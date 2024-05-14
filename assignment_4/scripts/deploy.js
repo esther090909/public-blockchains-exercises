@@ -1,3 +1,9 @@
+// We require the Hardhat Runtime Environment explicitly here. This is optional
+// but useful for running the script in a standalone fashion through `node <script>`.
+//
+// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
+// will compile your contracts, add the Hardhat Runtime Environment's members to the
+// global scope, and execute the script.
 const hre = require("hardhat");
 
 async function main() {
@@ -22,7 +28,7 @@ async function main() {
     // Now we can deploy the assignment.
 
     // Todo: replace the name.
-    const assContractName = "CensorableToken";
+    const assContractName = "NFTminter";
 
     const Ass = await hre.ethers.getContractFactory(assContractName, {
         signer: deployer,
@@ -32,7 +38,7 @@ async function main() {
     // the parameter to the constructor of BaseAssignment).
     
     // Todo: adjust if assignment requires other input parameters.
-    const ass = await Ass.deploy("CensorableToken", "CTN", 1000000, deployer.address, valAddress);
+    const ass = await Ass.deploy();
   
     await ass.waitForDeployment();
 
